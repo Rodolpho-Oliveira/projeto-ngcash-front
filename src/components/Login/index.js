@@ -32,7 +32,7 @@ export default function Login(){
             console.log(response)
             localStorage.setItem("token", response.data[0])
             localStorage.setItem("name", response.data[1])
-            navigate("/menu")
+            navigate(`/menu/${localStorage.getItem("name")}`)
         })
     }
 }
