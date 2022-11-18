@@ -6,6 +6,7 @@ export default function Home(){
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([])
     const [newTransaction, setNewTransaction] = useState({value: "", name: ""})
+    const [filter, setFilter] = useState(false)
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
@@ -50,11 +51,15 @@ export default function Home(){
             </NewTransaction>
             <Transactions>
                 <h1>Transações</h1>
+                <Filter onClick={() => {
+                    setFilter(!filter)
+                    transactions.reverse()
+                    }}>{filter ? "👆" : "👇"}</Filter>
                 <TransactionsList>
                     {transactions.length > 0 ? transactions.map((transaction, index) => {
                         return(
                             <Transaction key={index}>
-                                {transaction.debitedAccountId === localStorage.getItem("name") ? <Green>Enviado </Green>: <Red>Pago</Red>}
+                                {transaction.debitedAccountId === parseInt(localStorage.getItem("name")) ?  <Red>Pago</Red> : <Green>Enviado</Green>}
                                 <p>R${transaction.value},00</p>
                             </Transaction>
                         )
@@ -74,6 +79,7 @@ export default function Home(){
         })
         .then((response) => {
             setLoad(!load)
+            setFilter(false)
             setNewTransaction({value: "", name: ""})
         })
     }
@@ -237,4 +243,17 @@ const Logout = styled.button`
     &:hover{
         cursor: pointer;
     }
+`
+
+const Filter = styled.button`
+    width: 40px;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 20px;
+    padding: 0px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: #A328D6;
+    color: #FFFFFF;
 `
