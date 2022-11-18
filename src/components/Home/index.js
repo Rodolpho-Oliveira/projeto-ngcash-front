@@ -5,7 +5,8 @@ import styled from "styled-components"
 export default function Home(){
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([])
-    const [newTransaction, setNewTransaction] = useState({value: 0, description: ""})
+    const [newTransaction, setNewTransaction] = useState({value: "", name: ""})
+    const [load, setLoad] = useState(false)
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -31,13 +32,21 @@ export default function Home(){
             console.log(e)
         })
 
-    }, [])    
+    }, [load])    
     return(
         <HomePage>
             <Balance>
                 <h1>Saldo Total</h1>
                 <h1>R$ {balance},00</h1>
             </Balance>
+            <NewTransaction>
+                <h1>Nova Transação</h1>
+                <form onSubmit={(e) => sendTransaction(e)}>
+                    <InfoInput onChange={(e) => setNewTransaction({...newTransaction, value: parseInt(e.target.value)})} value={newTransaction.value} placeholder="Valor" type="number"/>
+                    <InfoInput onChange={(e) => setNewTransaction({...newTransaction, name: e.target.value})} value={newTransaction.name} placeholder="Nome" type="text"/>
+                    <SubmitButton type="submit" value="Enviar"/>
+                </form>
+            </NewTransaction>
             <Transactions>
                 <h1>Transações</h1>
                 <TransactionsList>
@@ -53,6 +62,20 @@ export default function Home(){
             </Transactions>
         </HomePage>
     )
+
+    function sendTransaction(e){
+        e.preventDefault()
+        const token = localStorage.getItem("token")
+        axios
+        .post(`http://localhost:5000/transaction/${localStorage.getItem("name")}`, newTransaction, {headers: {Authorization: `Bearer ${token}`}})
+        .catch((e) => {
+            console.log(e.response)
+        })
+        .then((response) => {
+            setLoad(!load)
+            setNewTransaction({value: "", name: ""})
+        })
+    }
 }
 
 const HomePage = styled.div`
@@ -62,6 +85,7 @@ const HomePage = styled.div`
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
 `
 
 const Balance = styled.div`
@@ -87,8 +111,8 @@ const Transactions = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: auto;
+    width: 300px;
+    height: 300px;
     overflow-y: scroll;
     overflow-x: hidden;
     background-color: #FFFFFF;
@@ -130,4 +154,45 @@ const Transaction = styled.div`
     p{
         margin: 10px;
     }
+`
+
+const NewTransaction = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 300px;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 20px;
+`
+
+const InfoInput = styled.input`
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px;
+    padding: 0px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: #F2F2F2;
+`
+
+const SubmitButton = styled.input`
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px;
+    padding: 0px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: #A328D6;
+    color: #FFFFFF;
 `
