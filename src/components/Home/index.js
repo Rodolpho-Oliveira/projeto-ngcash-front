@@ -38,6 +38,7 @@ export default function Home(){
             <Balance>
                 <h1>Saldo Total</h1>
                 <h1>R$ {balance},00</h1>
+                <Logout onClick={() => logout()}>Sair</Logout>
             </Balance>
             <NewTransaction>
                 <h1>Nova Transação</h1>
@@ -76,6 +77,11 @@ export default function Home(){
             setNewTransaction({value: "", name: ""})
         })
     }
+
+    function logout(){
+        localStorage.clear()
+        window.location.href = "/"
+    }
 }
 
 const HomePage = styled.div`
@@ -100,6 +106,7 @@ const Balance = styled.div`
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
     font-size: 30px;
     font-weight: 700;
+    margin-top: 10px;
 
     h1{
         margin: 10px;
@@ -120,7 +127,7 @@ const Transactions = styled.div`
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
     font-size: 30px;
     font-weight: 700;
-    margin-top: 20px;
+    margin: 10px 0px;
 
     h1{
         margin: 10px;
@@ -213,4 +220,21 @@ const Red = styled.p`
 
 const Green = styled.p`
     color: green;
+`
+
+const Logout = styled.button`
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 20px;
+    padding: 0px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: #A328D6;
+    color: #FFFFFF;
+
+    &:hover{
+        cursor: pointer;
+    }
 `
