@@ -53,7 +53,7 @@ export default function Home(){
                     {transactions.length > 0 ? transactions.map((transaction, index) => {
                         return(
                             <Transaction key={index}>
-                                <p>{transaction.debitedAccountId === localStorage.getItem("name") ? "Enviado" : "Pago"}</p>
+                                {transaction.debitedAccountId === localStorage.getItem("name") ? <Green>Enviado </Green>: <Red>Pago</Red>}
                                 <p>R${transaction.value},00</p>
                             </Transaction>
                         )
@@ -91,7 +91,6 @@ const HomePage = styled.div`
 const Balance = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: left;
     justify-content: center;
     width: 300px;
     height: 150px;
@@ -122,6 +121,10 @@ const Transactions = styled.div`
     font-size: 30px;
     font-weight: 700;
     margin-top: 20px;
+
+    h1{
+        margin: 10px;
+    }
 `
 
 const TransactionsList = styled.div`
@@ -170,6 +173,13 @@ const NewTransaction = styled.div`
     font-size: 30px;
     font-weight: 700;
     margin-top: 20px;
+
+    input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 `
 
 const InfoInput = styled.input`
@@ -189,10 +199,18 @@ const SubmitButton = styled.input`
     height: 50px;
     border-radius: 10px;
     border: none;
-    margin: 10px;
+    margin-left: 20px;
     padding: 0px 10px;
     font-size: 20px;
     font-weight: 700;
     background-color: #A328D6;
     color: #FFFFFF;
+`
+
+const Red = styled.p`
+    color: red;
+`
+
+const Green = styled.p`
+    color: green;
 `
