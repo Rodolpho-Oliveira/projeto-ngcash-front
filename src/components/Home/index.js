@@ -7,6 +7,7 @@ export default function Home(){
     const [transactions, setTransactions] = useState([])
     const [newTransaction, setNewTransaction] = useState({value: "", name: ""})
     const [filter, setFilter] = useState(false)
+    const [type, setType] = useState(false)
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
@@ -51,12 +52,30 @@ export default function Home(){
             </NewTransaction>
             <Transactions>
                 <h1>Transações</h1>
-                <Filter onClick={() => {
-                    setFilter(!filter)
-                    transactions.reverse()
-                    }}>{filter ? "👆" : "👇"}</Filter>
+                <TransactionType>
+                    <Filter onClick={() => {
+                        setFilter(!filter)
+                        transactions.reverse()
+                        }}>{filter ? "👆" : "👇"}
+                    </Filter>
+                    <Filter onClick={() => {
+                        setType("received")
+                    }}>🟢</Filter>
+                     <Filter onClick={() => {
+                        setType("sent")
+                    }}>🔴</Filter>
+                     <Filter onClick={() => {
+                        setType("")
+                    }}>🔄</Filter>
+                </TransactionType>
                 <TransactionsList>
                     {transactions.length > 0 ? transactions.map((transaction, index) => {
+                        if(type === "received" && transaction.debitedAccountId === parseInt(localStorage.getItem("name"))){
+                            return(<p></p>)
+                        }
+                        if(type === "sent" && transaction.creditedAccountId === parseInt(localStorage.getItem("name"))){
+                            return(<p></p>)
+                        }
                         return(
                             <Transaction key={index}>
                                 {transaction.debitedAccountId === parseInt(localStorage.getItem("name")) ?  <Red>Pago</Red> : <Green>Enviado</Green>}
@@ -247,13 +266,29 @@ const Logout = styled.button`
 
 const Filter = styled.button`
     width: 40px;
-    height: 60px;
+    height: 40px;
     border-radius: 10px;
     border: none;
     margin-left: 20px;
-    padding: 0px 10px;
     font-size: 20px;
     font-weight: 700;
     background-color: #A328D6;
     color: #FFFFFF;
+`
+
+const TransactionType = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    font-size: 30px;
+    font-weight: 700;
+    margin: 20px 5px 0 0;
+    padding: 0px 10px;
 `
