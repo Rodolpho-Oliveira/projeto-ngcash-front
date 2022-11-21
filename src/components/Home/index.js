@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
+import dotenv from "dotenv"
+dotenv.config()
 
 export default function Home(){
     const [balance, setBalance] = useState(0)
@@ -16,7 +18,7 @@ export default function Home(){
             window.location.href = "/"
         }
         axios
-        .get(`http://localhost:5000/transaction/${localStorage.getItem("name")}`, {headers: {Authorization: `Bearer ${token}`}})
+        .get(`${process.env.REACT_APP_URL}/transaction/${localStorage.getItem("name")}`, {headers: {Authorization: `Bearer ${token}`}})
         .catch((e) => {
             console.log(e.response)
         })
@@ -26,7 +28,7 @@ export default function Home(){
         })
 
         axios
-        .get(`http://localhost:5000/home/${localStorage.getItem("name")}`, {headers: {Authorization: `Bearer ${token}`}})
+        .get(`${process.env.REACT_APP_URL}/home/${localStorage.getItem("name")}`, {headers: {Authorization: `Bearer ${token}`}})
         .then((response) => {
             setBalance(response.data.account.balance)
         })
@@ -92,7 +94,7 @@ export default function Home(){
         e.preventDefault()
         const token = localStorage.getItem("token")
         axios
-        .post(`http://localhost:5000/transaction/${localStorage.getItem("name")}`, newTransaction, {headers: {Authorization: `Bearer ${token}`}})
+        .post(`${process.env.REACT_APP_URL}/transaction/${localStorage.getItem("name")}`, newTransaction, {headers: {Authorization: `Bearer ${token}`}})
         .catch((e) => {
             console.log(e.response)
         })

@@ -23,7 +23,7 @@ export default function SignUp(){
 
     function createAccount(e){
         e.preventDefault()
-        const promise = axios.post("http://localhost:5000/signup", userSignUp)
+        const promise = axios.post(`${process.env.REACT_APP_URL}/signup`, userSignUp)
         promise.catch((e) => {
             setError(true)
             console.log(e)

@@ -23,7 +23,7 @@ export default function Login(){
     
     function acessAccount(e){
         e.preventDefault()
-        const promise = axios.post("http://localhost:5000/signin", userLogin)
+        const promise = axios.post(`${process.env.REACT_APP_URL}/signin`, userLogin)
         promise.catch((e) => {
             setError(true)
             console.log(e.response)
