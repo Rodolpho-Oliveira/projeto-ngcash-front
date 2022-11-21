@@ -93,6 +93,7 @@ export default function Home(){
     function sendTransaction(e){
         e.preventDefault()
         const token = localStorage.getItem("token")
+        newTransaction.value = parseFloat(newTransaction.value)
         axios
         .post(`${process.env.REACT_APP_URL}/transaction/${localStorage.getItem("name")}`, newTransaction, {headers: {Authorization: `Bearer ${token}`}})
         .catch((e) => {
