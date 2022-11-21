@@ -82,7 +82,7 @@ export default function Home(){
                                 <p>R${transaction.value},00</p>
                             </Transaction>
                         )
-                    }): <p>Vazia 😥</p>}
+                    }): <Empty>Vazia 😥</Empty>}
                 </TransactionsList>
             </Transactions>
         </HomePage>
@@ -245,6 +245,10 @@ const Red = styled.p`
 
 const Green = styled.p`
     color: green;
+`
+
+const Empty = styled.p`
+    margin-top: 20px;
 `
 
 const Logout = styled.button`
